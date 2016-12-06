@@ -1,0 +1,70 @@
+package CrawlerThing;
+
+
+import java.util.concurrent.TimeUnit;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+
+
+public class Start {
+ 
+	
+	/*
+	**************************************************************************
+	**************************************************************************
+	**   			  COPY YOUR GA REPORT URL BELOW.                        **
+	**   		ENSURE THAT THE "/" AT THE END OF THE URL IS DELETED        **
+	**  				MAX ROWS OF EXPORT FOR NOW IS 10,000,000 		    **
+	**  			if your rows exceed that, edit code below. 				**
+	**************************************************************************
+	**************************************************************************
+	
+	*/
+	//insert GA report URL, user name and password.
+	public static String GAreport = "";
+	public static String Username = "";
+	public static String Password = "";
+	
+	
+//****************GENERAL CODE************************
+
+ public static void main(String[] args) throws InterruptedException {
+	  System.setProperty("webdriver.chrome.driver”,”INSERT FILE LOCATION OF CHROME WEBDRIVER e.g C://USER… ”);
+		WebDriver driver = new ChromeDriver();
+		driver.navigate().to(GAreport) ;
+		driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+
+		driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+		driver.findElement(By.id("Email")).sendKeys(Username);
+		driver.findElement(By.id("next")).click();
+		driver.findElement(By.id("Passwd")).sendKeys(Password);
+		driver.findElement(By.id("signIn")).click(); 
+		driver.navigate().to(GAreport + "%26explorer-table.rowStart%3D0%26explorer-table.rowCount%3D5000/") ;
+		driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
+		
+
+//if(isElementPresent(By.linkText("Submit")))
+		for(int i=5001 ; i<10000000 ; i+=5000){
+		
+			 if(!driver.findElements(By.xpath("//tr/td[text()='There is no data for this view.']")).isEmpty()){
+					System.out.println("No more data. Quit.");
+					System.exit(0);
+			    }else{
+		driver.findElement(By.xpath("//span[contains(.,'Export')]")).click();
+			driver.findElement(By.xpath("//span[contains(.,'CSV')]")).click();
+
+			String pages = i + "";
+			driver.findElement(By.className("ID-gotoInput")).clear();
+			driver.findElement(By.className("ID-gotoInput")).sendKeys(pages);
+			driver.findElement(By.className("ID-gotoInput")).sendKeys(Keys.ENTER);
+			driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS); }
+		
+			    }
+ }
+}
+
+
+
