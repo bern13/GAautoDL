@@ -1,3 +1,6 @@
+/* Author: bern13
+ Created: 29 sept '16
+ */
 package CrawlerThing;
 
 
